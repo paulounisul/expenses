@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
 
-class TransactionForm extends StatelessWidget {
-  final titleController = TextEditingController();
-  final valueController = TextEditingController();
-
+class TransactionForm extends StatefulWidget {
   final void Function(String, double) onSubmit;
 
   TransactionForm(this.onSubmit);
+
+  @override
+  _TransactionFormState createState() => _TransactionFormState();
+}
+
+class _TransactionFormState extends State<TransactionForm> {
+  final titleController = TextEditingController();
+
+  final valueController = TextEditingController();
+
+  _submitForm() {
+    final title = titleController.text;
+    final value = double.tryParse(valueController.text) ?? 0.0;
+
+    if (title.isEmpty || value <= 0) {
+      return;
+    }
+
+    widget.onSubmit(title, value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +43,9 @@ class TransactionForm extends StatelessWidget {
               //usar o controller melhor forma mais ainda não é a ideal.
               //onChanged: (newValue) => value = newValue,
               controller: valueController,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              // _ ignora o parametro passado na função.
+              onSubmitted: (_) => _submitForm(),
               decoration: InputDecoration(
                 labelText: 'Valor R\S',
               ),
@@ -36,11 +56,7 @@ class TransactionForm extends StatelessWidget {
                 FlatButton(
                   child: Text('Nova Transação'),
                   textColor: Colors.purple,
-                  onPressed: () {
-                    final title = titleController.text;
-                    final value = double.tryParse(valueController.text) ?? 0.0;
-                    onSubmit(title, value);
-                  },
+                  onPressed: _submitForm,
                 ),
               ],
             )
