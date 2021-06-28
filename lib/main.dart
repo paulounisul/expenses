@@ -105,14 +105,14 @@ class _MyHomePageState extends State<MyHomePage> {
   // Considerar o textScaleFactor.. para aumentar a responsividade
   // do app..
   // style: TextStyle(
-  //         fontSize: 25 * MediaQuery.of(context).textScaleFactor,
+  //         fontSize: 25 * mediaQuery.textScaleFactor,
   //       ),
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     //altura disponivel
-    bool isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape = mediaQuery.orientation == Orientation.landscape;
 
     final appBar = AppBar(
       title: Text(
@@ -135,9 +135,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
 
-    final avaliableHeight = MediaQuery.of(context).size.height -
+    final avaliableHeight = mediaQuery.size.height -
         appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top;
+        mediaQuery.padding.top;
 
     return Scaffold(
       appBar: appBar,
@@ -162,12 +162,12 @@ class _MyHomePageState extends State<MyHomePage> {
             //   ),
             if (_showChart || !isLandscape)
               Container(
-                height: avaliableHeight * (isLandscape ? 0.7 : 0.30),
+                height: avaliableHeight * (isLandscape ? 0.8 : 0.30),
                 child: Chart(_recentTransactions),
               ),
             if (!_showChart || !isLandscape)
               Container(
-                height: avaliableHeight * 0.70,
+                height: avaliableHeight * (isLandscape ? 1 : 0.70),
                 child: TransactionList(_transactions, _removeTransaction),
               ),
           ],
