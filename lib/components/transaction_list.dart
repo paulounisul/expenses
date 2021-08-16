@@ -1,11 +1,11 @@
+import 'package:expenses/components/transaction_item.dart';
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
-import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   final void Function(String) onRemove;
-  final f = NumberFormat('#,###.0#', 'pt_BR');
+  // final f = NumberFormat('#,###.0#', 'pt_BR');
 
   TransactionList(this.transactions, this.onRemove);
 
@@ -37,44 +37,9 @@ class TransactionList extends StatelessWidget {
             itemCount: transactions.length,
             itemBuilder: (ctx, index) {
               final tr = transactions[index];
-              return Card(
-                elevation: 5,
-                margin: EdgeInsets.symmetric(
-                  horizontal: 5,
-                  vertical: 8,
-                ),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 30,
-                    child: Padding(
-                      padding: const EdgeInsets.all(6),
-                      child: FittedBox(
-                        child: Text('R\$${tr.value}'),
-                      ),
-                    ),
-                  ),
-                  title: Text(
-                    tr.title,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  subtitle: Text(
-                    DateFormat('d MMM y').format(tr.date),
-                  ),
-                  //tileColor: Color.fromARGB(180, 90, 70, 200),
-                  trailing: MediaQuery.of(context).size.width > 450
-                      ? FlatButton.icon(
-                          onPressed: () => onRemove(tr.id),
-                          icon: Icon(Icons.delete),
-                          label: Text('Excluir'),
-                          textColor: Theme.of(context).errorColor,
-                        )
-                      : IconButton(
-                          icon: Icon(Icons.delete),
-                          color: Theme.of(context).errorColor,
-                          //precisa passar como função para que seja possivel passar o paramentro.
-                          onPressed: () => onRemove(tr.id),
-                        ),
-                ),
+              return TransactionItem(
+                tr: tr,
+                onRemove: onRemove,
               );
             },
             // children: transactions.map((tr) {}).toList(),
